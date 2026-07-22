@@ -23,7 +23,8 @@ export default function MainLayout() {
             ))}
           </nav>
           <div className="flex shrink-0 items-center gap-2">
-            <Button to="/contact" className="hidden md:inline-flex">Book Consultation</Button>
+            <Button to="/marketplace" variant="ghost" className="hidden md:inline-flex">Marketplace</Button>
+            <Button to="/contact" className="hidden md:inline-flex">Get Started</Button>
             <button className="focus-ring p-3 lg:hidden" onClick={() => setOpen((value) => !value)} aria-label="Open navigation">
               {open ? <FiX /> : <FiMenu />}
             </button>

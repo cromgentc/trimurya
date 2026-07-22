@@ -6,6 +6,7 @@ import Services from '../pages/Services.jsx';
 import ServiceDetail from '../pages/ServiceDetail.jsx';
 import Industries from '../pages/Industries.jsx';
 import Projects from '../pages/Projects.jsx';
+import Marketplace from '../pages/Marketplace.jsx';
 import Careers from '../pages/Careers.jsx';
 import Blog from '../pages/Blog.jsx';
 import Contact from '../pages/Contact.jsx';
@@ -23,6 +24,7 @@ export default function AppRoutes() {
         <Route path="services/:serviceSlug" element={<ServiceDetail />} />
         <Route path="industries" element={<Industries />} />
         <Route path="projects" element={<Projects />} />
+        <Route path="marketplace" element={<Marketplace />} />
         <Route path="careers" element={<Careers />} />
         <Route path="blog" element={<Blog />} />
         <Route path="contact" element={<Contact />} />
