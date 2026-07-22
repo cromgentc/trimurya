@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <rect width="100%" height="100%" fill="#06132a" />
+  <g fill="#ffd6a522">
+    <rect x="200" y="200" width="720" height="360" rx="26" />
+  </g>
+  <text x="240" y="460" font-family="Inter, Arial, sans-serif" font-size="64" fill="#fff">Design 13</text>
+</svg>
