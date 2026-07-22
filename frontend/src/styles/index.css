@@ -74,3 +74,24 @@ body {
 .trimurya-hero-pagination .swiper-pagination-bullet-active {
   @apply w-9 rounded-full bg-accent;
 }
+
+/* Thin themed scrollbar for marketplace dropdowns */
+.marketplace-dropdown {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #f2b218 #f1f5f9; /* thumb track */
+}
+.marketplace-dropdown::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.marketplace-dropdown::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 999px;
+}
+.marketplace-dropdown::-webkit-scrollbar-thumb {
+  background: #f2b218;
+  border-radius: 999px;
+  border: 2px solid transparent; /* gives a small gap look */
+  background-clip: padding-box;
+}
+

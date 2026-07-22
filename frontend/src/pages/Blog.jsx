@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useSearchParams } from 'react-router-dom';
 import {
   FiArrowRight,
   FiBarChart2,
@@ -258,9 +259,18 @@ function VideoPlayer({ video, onClose }) {
 }
 
 export default function Blog() {
-  const [query, setQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [query, setQuery] = useState(() => searchParams.get('q') || '');
   const [activeCategory, setActiveCategory] = useState('All');
   const [activeVideo, setActiveVideo] = useState(null);
+
+  useEffect(() => {
+    if (query) {
+      setSearchParams({ q: query }, { replace: true });
+    } else {
+      setSearchParams({}, { replace: true });
+    }
+  }, [query, setSearchParams]);
 
   const searchableItems = useMemo(
     () => [

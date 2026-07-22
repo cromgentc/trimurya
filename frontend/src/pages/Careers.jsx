@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { FiUpload } from 'react-icons/fi';
 import Button from '../components/Button.jsx';
 import SearchBar from '../components/SearchBar.jsx';
@@ -6,7 +7,17 @@ import SectionHeader from '../components/SectionHeader.jsx';
 import { jobs } from '../data/siteData.js';
 
 export default function Careers() {
-  const [query, setQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [query, setQuery] = useState(() => searchParams.get('q') || '');
+
+  useEffect(() => {
+    if (query) {
+      setSearchParams({ q: query }, { replace: true });
+    } else {
+      setSearchParams({}, { replace: true });
+    }
+  }, [query, setSearchParams]);
+
   const filtered = jobs.filter((job) => `${job.title} ${job.department}`.toLowerCase().includes(query.toLowerCase()));
   return (
     <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
