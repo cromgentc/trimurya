@@ -1,0 +1,44 @@
+<svg width="1600" height="520" viewBox="0 0 1600 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="520" fill="#0F172A"/>
+  <rect width="1600" height="520" fill="url(#a)" opacity="0.9"/>
+  <rect width="1600" height="520" fill="url(#b)" opacity="0.82"/>
+  <g opacity="0.22">
+    <path d="M0 396C188 328 307 419 486 337C668 254 730 117 936 157C1136 196 1264 360 1600 234" stroke="#06B6D4" stroke-width="2"/>
+    <path d="M0 299C176 245 351 303 508 238C654 178 748 63 940 95C1150 129 1296 244 1600 143" stroke="#2563EB" stroke-width="2"/>
+    <path d="M0 446C260 370 402 494 621 403C804 326 892 242 1071 282C1271 326 1375 441 1600 368" stroke="#93C5FD" stroke-width="1.5"/>
+  </g>
+  <g opacity="0.35">
+    <circle cx="248" cy="158" r="4" fill="#67E8F9"/>
+    <circle cx="410" cy="300" r="5" fill="#60A5FA"/>
+    <circle cx="642" cy="214" r="4" fill="#22D3EE"/>
+    <circle cx="806" cy="112" r="6" fill="#38BDF8"/>
+    <circle cx="1002" cy="238" r="4" fill="#67E8F9"/>
+    <circle cx="1228" cy="172" r="6" fill="#60A5FA"/>
+    <circle cx="1394" cy="328" r="5" fill="#22D3EE"/>
+  </g>
+  <g opacity="0.16">
+    <rect x="1008" y="82" width="410" height="250" rx="28" fill="#FFFFFF"/>
+    <rect x="1038" y="119" width="155" height="16" rx="8" fill="#67E8F9"/>
+    <rect x="1038" y="164" width="320" height="12" rx="6" fill="#FFFFFF"/>
+    <rect x="1038" y="196" width="258" height="12" rx="6" fill="#FFFFFF"/>
+    <rect x="1038" y="244" width="58" height="58" rx="14" fill="#2563EB"/>
+    <rect x="1118" y="244" width="58" height="58" rx="14" fill="#06B6D4"/>
+    <rect x="1198" y="244" width="58" height="58" rx="14" fill="#2563EB"/>
+    <rect x="1278" y="244" width="58" height="58" rx="14" fill="#06B6D4"/>
+  </g>
+  <g opacity="0.12">
+    <path d="M146 103H608M146 156H608M146 209H608M146 262H608M146 315H608M146 368H608M146 421H608M146 103V421M212 103V421M278 103V421M344 103V421M410 103V421M476 103V421M542 103V421M608 103V421" stroke="#FFFFFF"/>
+  </g>
+  <defs>
+    <radialGradient id="a" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1188 150) rotate(151.6) scale(863 524)">
+      <stop stop-color="#06B6D4" stop-opacity="0.52"/>
+      <stop offset="0.42" stop-color="#2563EB" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#0F172A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="b" x1="0" y1="0" x2="1600" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#020617"/>
+      <stop offset="0.5" stop-color="#0F172A" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#1E293B"/>
+    </linearGradient>
+  </defs>
+</svg>

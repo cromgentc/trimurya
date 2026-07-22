@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+@keyframes hero-fade {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  20% { opacity: 1; }
+  25% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+.dark body {
+  background: #020617;
+  color: #f8fafc;
+}
+
+::selection {
+  background: #ff7a12;
+  color: #fff;
+}
+
+.glass {
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(18px);
+}
+
+.dark .glass {
+  background: rgba(15, 23, 42, 0.74);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #061d5c, #f2b218);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+..enterprise-grid {
+  background-image:
+    linear-gradient(rgba(242, 178, 24, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242, 178, 24, 0.08) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.focus-ring {
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 dark:focus-visible:ring-offset-primary;
+}
+
+.trimurya-hero-pagination .swiper-pagination-bullet {
+  @apply h-2.5 w-2.5 bg-white/60 opacity-100 transition-all duration-300;
+}
+
+.trimurya-hero-pagination .swiper-pagination-bullet-active {
+  @apply w-9 rounded-full bg-accent;
+}

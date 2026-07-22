@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <rect width="100%" height="100%" fill="#0b223a" />
+  <g fill="#6be2a122">
+    <rect x="120" y="220" width="540" height="320" rx="26" />
+    <circle cx="1280" cy="640" r="160" />
+  </g>
+  <text x="140" y="560" font-family="Inter, Arial, sans-serif" font-size="64" fill="#fff">AI 08</text>
+</svg>
