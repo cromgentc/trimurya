@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" rx="36" fill="#0F172A"/>
+  <rect x="56" y="56" width="1088" height="518" rx="28" fill="#111827" stroke="#38BDF8" stroke-width="3"/>
+  <circle cx="930" cy="220" r="140" fill="#38BDF8" opacity="0.18"/>
+  <path d="M220 430h180l120-180 110 160 80-100h180" stroke="#F8FAFC" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <text x="120" y="220" fill="#F8FAFC" font-family="Segoe UI, Arial, sans-serif" font-size="54" font-weight="700">Trimurya Corporation</text>
+  <text x="120" y="285" fill="#7DD3FC" font-family="Segoe UI, Arial, sans-serif" font-size="28">AI • Technology • Talent</text>
+  <text x="120" y="372" fill="#CBD5E1" font-family="Segoe UI, Arial, sans-serif" font-size="34">Enterprise solutions for growth, automation, and digital transformation</text>
+</svg>

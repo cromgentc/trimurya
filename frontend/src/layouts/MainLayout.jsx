@@ -1,11 +1,12 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiMenu, FiX, FiChevronDown, FiCircle, FiGlobe, FiDatabase, FiCpu, FiServer, FiLayers, FiCloud } from 'react-icons/fi';
 import { navLinks } from '../data/siteData.js';
 import Button from '../components/Button.jsx';
 import AIChatAssistant from '../components/AIChatAssistant.jsx';
 import TextLogo from '../components/TextLogo.jsx';
 import Footer from '../components/Footer.jsx';
+import { setPageSeo } from '../utils/seo.js';
 
 const marketplaceLinks = [
   {
@@ -86,6 +87,11 @@ export default function MainLayout() {
   const isMarketplace = location.pathname === '/marketplace' || location.pathname.startsWith('/marketplace/');
 
   const toggleDropdown = (label) => setOpenDropdown((current) => (current === label ? null : label));
+
+  useEffect(() => {
+    setPageSeo(location.pathname);
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }, [location.pathname]);
 
   const iconMap = {
     'AI Data': FiDatabase,

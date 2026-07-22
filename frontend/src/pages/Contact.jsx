@@ -5,7 +5,7 @@ import SectionHeader from '../components/SectionHeader.jsx';
 export default function Contact() {
   const items = [
     { icon: FiPhone, label: 'Phone / WhatsApp', value: '+91 00000 00000' },
-    { icon: FiMail, label: 'Email', value: 'info@trimuryacorporation.com' },
+    { icon: FiMail, label: 'Email', value: 'info@trimuryacorporation.in' },
     { icon: FiMapPin, label: 'Office Address', value: 'India • Global Delivery' },
     { icon: FiClock, label: 'Business Hours', value: 'Mon - Sat, 10:00 AM - 7:00 PM' }
   ];
