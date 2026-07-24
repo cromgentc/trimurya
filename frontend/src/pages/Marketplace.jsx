@@ -164,7 +164,7 @@ return (
         </div>
       </div>
       <div className="mt-12 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-        <h2 className="text-3xl font-black text-slate-950">Call Center Conversation Speech Datasets</h2>
+        <h2 className="text-3xl font-black text-slate-950">Enterprise AI Datasets</h2>
         <button className="rounded-full border border-amber-200 bg-amber-50 px-5 py-2 text-sm font-semibold text-amber-700 transition hover:bg-amber-100">
         Explore Datasets wise
         </button>
@@ -205,6 +205,30 @@ return (
         language: 'English',
         regions: 'US → US',
         image: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=800&q=80'
+        },
+        {
+        title: 'Multilingual Design Interface Dataset for E-Commerce Platforms',
+        duration: '120 Hrs',
+        type: 'Design',
+        language: 'Multi-language',
+        regions: 'Global',
+        image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80'
+        },
+        {
+        title: 'UI/UX Annotation Dataset for Mobile Applications',
+        duration: '200 Hrs',
+        type: 'Design',
+        language: 'English + Regional',
+        regions: 'India',
+        image: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d1a1?auto=format&fit=crop&w=800&q=80'
+        },
+        {
+        title: 'Brand Identity Design Dataset for Enterprise Marketing',
+        duration: '75 Hrs',
+        type: 'Design',
+        language: 'English',
+        regions: 'Global',
+        image: 'https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=800&q=80'
         }
         ].map((dataset) => (
         <SwiperSlide key={dataset.title} className="h-full">
@@ -220,7 +244,9 @@ return (
                 <span className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-2">{dataset.language}</span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-2">{dataset.regions}</span>
               </div>
-              <p className="mt-4 text-sm leading-6 text-slate-600">The audio dataset includes call center conversations in Finance, featuring English speakers from India and US, with detailed metadata and accurate transcriptions.</p>
+              {dataset.type === 'ASR' 
+               ? 'The audio dataset includes call center conversations featuring detailed metadata and accurate transcriptions for AI model training.' 
+               : 'The design dataset includes annotated interface assets, brand elements, and visual annotations optimized for generative and computer vision models.'}
               <button className="mt-6 mx-auto flex items-center gap-2 rounded-full bg-amber-500 px-5 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-amber-600">
                 Get Dataset
                 <FiChevronRight className="h-4 w-4" />

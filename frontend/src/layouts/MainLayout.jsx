@@ -1,12 +1,25 @@
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { FiMenu, FiX, FiChevronDown, FiCircle, FiGlobe, FiDatabase, FiCpu, FiServer, FiLayers, FiCloud } from 'react-icons/fi';
-import { navLinks } from '../data/siteData.js';
+import { resolveIcon } from '../utils/iconResolver.js';
 import Button from '../components/Button.jsx';
 import AIChatAssistant from '../components/AIChatAssistant.jsx';
 import TextLogo from '../components/TextLogo.jsx';
 import Footer from '../components/Footer.jsx';
 import { setPageSeo } from '../utils/seo.js';
+import { fetchPublished } from '../services/contentApi.js';
+
+const iconNameMap = {
+  'Services': 'FiLayers',
+  'Industries': 'FiGlobe',
+  'Projects': 'FiBriefcase',
+  'Pricing': 'FiServer',
+  'Our Company': 'FiGlobe',
+};
+
+function serviceSlug(title) {
+  return title.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
 
 const marketplaceLinks = [
   {
@@ -84,7 +97,35 @@ export default function MainLayout() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [services, setServices] = useState([]);
+  const [industries, setIndustries] = useState([]);
   const isMarketplace = location.pathname === '/marketplace' || location.pathname.startsWith('/marketplace/');
+
+  const navLinks = [
+    { label: 'Home', path: '/', icon: 'FiHome' },
+    { label: 'About', path: '/about', icon: 'FiUsers' },
+    { label: 'Services', path: '#services', icon: 'FiLayers' },
+    { label: 'Industries', path: '#industries', icon: 'FiGlobe' },
+    { label: 'Projects', path: '/projects', icon: 'FiFolder' },
+  ];
+
+  const navDropdowns = {
+    Services: services.map((service) => ({ label: service.title, href: `/services/${serviceSlug(service.title)}`, icon: service.icon || 'FiLayers' })),
+    Industries: industries.slice(0, 8).map((industry, index) => ({ label: industry.title, href: '/industries', icon: industry.icon || ['FiActivity', 'FiCloud', 'FiCpu', 'FiShield', 'FiTarget', 'FiTrendingUp', 'FiFilm', 'FiHeadphones'][index] })),
+    Projects: [
+      { label: 'AI Delivery Rollout', href: '/projects', icon: 'FiCpu' },
+      { label: 'Service Website Redesign', href: '/projects', icon: 'FiGlobe' },
+      { label: 'Digital Growth Engine', href: '/projects', icon: 'FiTrendingUp' },
+      { label: 'Digital Transformation', href: '/projects', icon: 'FiBriefcase' },
+      { label: 'HR Transformation', href: '/projects', icon: 'FiUsers' },
+      { label: 'Retail Mobile App', href: '/projects', icon: 'FiLayers' }
+    ]
+  };
+
+  useEffect(() => {
+    Promise.all([fetchPublished('services'), fetchPublished('industries')])
+      .then(([s, i]) => { setServices(s); setIndustries(i); });
+  }, []);
 
   const toggleDropdown = (label) => setOpenDropdown((current) => (current === label ? null : label));
 
@@ -94,12 +135,12 @@ export default function MainLayout() {
   }, [location.pathname]);
 
   const iconMap = {
-    'AI Data': FiDatabase,
-    'Build AI': FiCpu,
-    'Solutions': FiLayers,
-    'Products': FiCloud,
-    'Pricing': FiServer,
-    'Our Company': FiGlobe,
+    'AI Data': 'FiDatabase',
+    'Build AI': 'FiCpu',
+    'Solutions': 'FiLayers',
+    'Products': 'FiCloud',
+    'Pricing': 'FiServer',
+    'Our Company': 'FiGlobe',
   };
 
   return (
@@ -110,11 +151,81 @@ export default function MainLayout() {
           {!isMarketplace ? (
             <>
               <nav className="hidden flex-1 items-center justify-center gap-1 lg:flex">
-                {navLinks.map((link) => (
-                  <NavLink key={link.path} to={link.path} className={({ isActive }) => `rounded-lg px-3 py-2 text-sm font-bold transition ${isActive ? 'bg-secondary/10 text-secondary dark:bg-slate-950/50' : 'text-slate-600 hover:text-secondary dark:text-slate-300'}`}>
-                    {link.label.toUpperCase()}
-                  </NavLink>
-                ))}
+                {navLinks.map((link) => {
+                  const hasDropdown = link.path.startsWith('#') && link.label in navDropdowns;
+
+                  if (hasDropdown) {
+                    return (
+                      <div key={link.path} className="relative">
+                        <NavLink
+                          to={link.path}
+                          onClick={(e) => e.preventDefault()}
+                          onMouseEnter={() => setOpenDropdown(link.label)}
+                          onFocus={() => setOpenDropdown(link.label)}
+                          className={({ isActive }) =>
+                            `rounded-lg px-3 py-2 text-sm font-medium transition inline-flex items-center gap-1.5 ${
+                              isActive
+                                ? 'bg-secondary/10 text-secondary dark:bg-slate-950/50'
+                                : 'text-slate-600 hover:text-secondary dark:text-slate-300'
+                            }`
+                          }
+                        >
+                          {link.icon && (() => { const Icon = resolveIcon(link.icon); return <Icon size={16} />; })()}
+                          {link.label.toUpperCase()}
+                        </NavLink>
+
+                        {openDropdown === link.label && (
+                          <div
+                            onMouseEnter={() => setOpenDropdown(link.label)}
+                            onMouseLeave={() => setOpenDropdown(null)}
+                            className="absolute top-full left-1/2 mt-3 w-[520px] max-w-[92vw] -translate-x-1/2 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_25px_70px_rgba(15,23,42,.15)] dark:border-slate-800 dark:bg-slate-950 z-50"
+                          >
+                            <div className="mb-4 border-b border-slate-100 pb-3">
+                              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-secondary">{link.label}</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              {navDropdowns[link.label].map((item) => {
+                                const ItemIcon = resolveIcon(item.icon);
+                                return (
+                                  <Link
+                                    key={item.label}
+                                    to={item.href}
+                                    onClick={() => setOpenDropdown(null)}
+                                    className="group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-secondary dark:text-slate-200 dark:hover:bg-slate-900"
+                                  >
+                                    {ItemIcon && (
+                                      <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 transition-colors group-hover:bg-secondary group-hover:text-white dark:bg-slate-800 dark:text-slate-400">
+                                        <ItemIcon size={16} />
+                                      </span>
+                                    )}
+                                    <span className="leading-tight">{item.label}</span>
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <NavLink
+                      key={link.path}
+                      to={link.path}
+                      className={({ isActive }) =>
+                        `rounded-lg px-3 py-2 text-sm font-medium transition inline-flex items-center gap-1.5 ${
+                          isActive
+                            ? 'bg-secondary/10 text-secondary dark:bg-slate-950/50'
+                            : 'text-slate-600 hover:text-secondary dark:text-slate-300'
+                        }`
+                      }
+                    >
+                      {link.icon && (() => { const Icon = resolveIcon(link.icon); return <Icon size={16} />; })()}
+                      {link.label.toUpperCase()}
+                    </NavLink>
+                  );
+                })}
               </nav>
               <div className="flex shrink-0 items-center gap-2">
                 <Button to="/marketplace" variant="ghost" className="hidden md:inline-flex">Marketplace</Button>
@@ -137,7 +248,7 @@ export default function MainLayout() {
                         ? 'Enterprise-grade products for annotation, transcription, RLHF and model tooling.'
                         : null;
 
-                  const TopIcon = iconMap[item.label];
+                  const TopIcon = resolveIcon(iconMap[item.label]);
 
                   return (
                     <div key={item.label} className="relative">
@@ -246,30 +357,85 @@ export default function MainLayout() {
             </>
           )}
         </div>
-        {open && (
-          <div className="border-t border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-950 lg:hidden">
-            {isMarketplace ? (
-              marketplaceLinks.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  target={item.external ? '_blank' : undefined}
-                  rel={item.external ? 'noreferrer' : undefined}
-                  className="block rounded-lg px-3 py-3 text-sm font-bold text-slate-700 dark:text-slate-200"
-                  onClick={() => setOpen(false)}
-                >
-                  {item.label.toUpperCase()}
-                </a>
-              ))
-            ) : (
-              navLinks.map((link) => (
-                <NavLink key={link.path} to={link.path} onClick={() => setOpen(false)} className="block rounded-lg px-3 py-3 text-sm font-bold text-slate-700 dark:text-slate-200">
-                  {link.label.toUpperCase()}
-                </NavLink>
-              ))
-            )}
-          </div>
-        )}
+         {open && (
+           <div className="border-t border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-950 lg:hidden">
+             {isMarketplace ? (
+               marketplaceLinks.map((item) => (
+                 <a
+                   key={item.label}
+                   href={item.href}
+                   target={item.external ? '_blank' : undefined}
+                   rel={item.external ? 'noreferrer' : undefined}
+                    className="block rounded-lg px-3 py-3 text-sm font-medium text-slate-700 dark:text-slate-200"
+                   onClick={() => setOpen(false)}
+                 >
+                   {item.label.toUpperCase()}
+                 </a>
+               ))
+              ) : (
+                <>
+                  {navLinks.map((link) => {
+                    const hasDropdown = link.path.startsWith('#') && link.label in navDropdowns;
+                    if (hasDropdown && openDropdown !== link.label) {
+                      return (
+                        <button
+                          key={link.path}
+                          type="button"
+                          onClick={() => setOpenDropdown(link.label)}
+                          className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-sm font-medium text-slate-700 dark:text-slate-200"
+                        >
+                          <span className="flex items-center gap-2">
+                            {link.icon && (() => { const Icon = resolveIcon(link.icon); return <Icon size={18} />; })()}
+                            {link.label.toUpperCase()}
+                          </span>
+                          <FiChevronDown size={16} />
+                        </button>
+                      );
+                    }
+                    if (hasDropdown && openDropdown === link.label) {
+                      return (
+                        <div key={link.path}>
+                          <button
+                            type="button"
+                            onClick={() => setOpenDropdown(null)}
+                            className="flex w-full items-center justify-between rounded-lg px-3 py-3 text-sm font-medium text-secondary"
+                          >
+                            <span className="flex items-center gap-2">
+                              {link.icon && (() => { const Icon = resolveIcon(link.icon); return <Icon size={18} />; })()}
+                              {link.label.toUpperCase()}
+                            </span>
+                            <FiChevronDown size={16} className="rotate-180" />
+                          </button>
+                          <div className="ml-4 mt-1 space-y-1">
+                            {navDropdowns[link.label].map((item) => {
+                              const ItemIcon = resolveIcon(item.icon);
+                              return (
+                                <NavLink
+                                  key={item.label}
+                                  to={item.href}
+                                  onClick={() => { setOpen(false); setOpenDropdown(null); }}
+                                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300"
+                                >
+                                  {ItemIcon && <ItemIcon size={16} />}
+                                  {item.label}
+                                </NavLink>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    }
+                    return (
+                      <NavLink key={link.path} to={link.path} onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-3 text-sm font-medium text-slate-700 dark:text-slate-200">
+                        {link.icon && (() => { const Icon = resolveIcon(link.icon); return <Icon size={18} />; })()}
+                        {link.label.toUpperCase()}
+                      </NavLink>
+                    );
+                  })}
+                </>
+              )}
+           </div>
+         )}
       </header>
       <main>
         <Outlet />

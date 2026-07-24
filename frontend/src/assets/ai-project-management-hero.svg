@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#061d5c"/>
+      <stop offset="1" stop-color="#0f2a6e"/>
+    </linearGradient>
+    <linearGradient id="card1" x1="0" y1="0" x2="400" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.02"/>
+    </linearGradient>
+    <linearGradient id="accent1" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f2b218"/>
+      <stop offset="1" stop-color="#ff7a12"/>
+    </linearGradient>
+    <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="100%" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f2b218" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#f2b218" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+  
+  <rect width="800" height="600" fill="url(#bg)"/>
+  
+  <!-- Grid pattern -->
+  <g opacity="0.05">
+    <path d="M0 50L800 50M0 100L800 100M0 150L800 150M0 200L800 200M0 250L800 250M0 300L800 300M0 350L800 350M0 400L800 400M0 450L800 450M0 500L800 500M0 550L800 550M50 0L50 600M100 0L100 600M150 0L150 600M200 0L200 600M250 0L250 600M300 0L300 600M350 0L350 600M400 0L400 600M450 0L450 600M500 0L500 600M550 0L550 600M600 0L600 600M650 0L650 600M700 0L700 600M750 0L750 600" stroke="#f2b218" stroke-width="1"/>
+  </g>
+  
+  <!-- Floating orbs -->
+  <circle cx="120" cy="120" r="80" fill="url(#accent1)" opacity="0.08"/>
+  <circle cx="700" cy="480" r="120" fill="#ff7a12" opacity="0.06"/>
+  <circle cx="650" cy="100" r="60" fill="#f2b218" opacity="0.06"/>
+  
+  <!-- Main dashboard card -->
+  <rect x="140" y="80" width="520" height="440" rx="24" fill="url(#card1)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  
+  <!-- Dashboard header -->
+  <rect x="140" y="80" width="520" height="56" rx="24" fill="rgba(255,255,255,0.04)"/>
+  <rect x="140" y="120" width="520" height="16" fill="rgba(255,255,255,0.04)"/>
+  <circle cx="175" cy="108" r="6" fill="#f2b218"/>
+  <circle cx="195" cy="108" r="6" fill="#ff7a12" opacity="0.7"/>
+  <circle cx="215" cy="108" r="6" fill="#ffffff" opacity="0.3"/>
+  
+  <!-- Sidebar nav -->
+  <rect x="140" y="136" width="72" height="384" fill="rgba(0,0,0,0.15)"/>
+  <rect x="140" y="136" width="72" height="8" fill="rgba(255,255,255,0.03)"/>
+  <circle cx="176" cy="180" r="14" fill="rgba(242,178,24,0.15)" stroke="#f2b218" stroke-width="2"/>
+  <path d="M170 180L175 185L182 178" stroke="#f2b218" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="155" y="210" width="42" height="8" rx="4" fill="rgba(255,255,255,0.15)"/>
+  <rect x="155" y="232" width="42" height="8" rx="4" fill="rgba(255,255,255,0.08)"/>
+  <rect x="155" y="254" width="42" height="8" rx="4" fill="rgba(255,255,255,0.08)"/>
+  <rect x="155" y="276" width="42" height="8" rx="4" fill="rgba(255,255,255,0.08)"/>
+  <rect x="155" y="298" width="42" height="8" rx="4" fill="rgba(255,255,255,0.08)"/>
+  
+  <!-- Progress bars -->
+  <rect x="230" y="180" width="180" height="10" rx="5" fill="rgba(242,178,24,0.2)"/>
+  <rect x="230" y="180" width="120" height="10" rx="5" fill="url(#accent1)"/>
+  <rect x="230" y="205" width="180" height="10" rx="5" fill="rgba(255,255,255,0.08)"/>
+  <rect x="230" y="205" width="90" height="10" rx="5" fill="#ff7a12" opacity="0.7"/>
+  <rect x="230" y="230" width="180" height="10" rx="5" fill="rgba(255,255,255,0.08)"/>
+  <rect x="230" y="230" width="150" height="10" rx="5" fill="#f2b218" opacity="0.8"/>
+  <rect x="230" y="255" width="180" height="10" rx="5" fill="rgba(255,255,255,0.08)"/>
+  <rect x="230" y="255" width="60" height="10" rx="5" fill="#ffffff" opacity="0.3"/>
+  
+  <!-- Labels -->
+  <rect x="420" y="174" width="60" height="10" rx="4" fill="rgba(255,255,255,0.2)"/>
+  <rect x="420" y="199" width="60" height="10" rx="4" fill="rgba(255,255,255,0.12)"/>
+  <rect x="420" y="224" width="60" height="10" rx="4" fill="rgba(255,255,255,0.12)"/>
+  <rect x="420" y="249" width="60" height="10" rx="4" fill="rgba(255,255,255,0.12)"/>
+  
+  <!-- Chart area -->
+  <rect x="230" y="290" width="400" height="180" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <rect x="250" y="310" width="120" height="8" rx="4" fill="rgba(255,255,255,0.15)"/>
+  <rect x="250" y="330" width="80" height="8" rx="4" fill="rgba(255,255,255,0.08)"/>
+  
+  <!-- Chart bars -->
+  <rect x="270" y="410" width="24" height="40" rx="4" fill="#f2b218" opacity="0.7"/>
+  <rect x="310" y="390" width="24" height="60" rx="4" fill="url(#accent1)"/>
+  <rect x="350" y="420" width="24" height="30" rx="4" fill="#ff7a12" opacity="0.5"/>
+  <rect x="390" y="370" width="24" height="80" rx="4" fill="#f2b218" opacity="0.8"/>
+  <rect x="430" y="400" width="24" height="50" rx="4" fill="url(#accent1)"/>
+  <rect x="470" y="380" width="24" height="70" rx="4" fill="#ff7a12" opacity="0.6"/>
+  <rect x="510" y="360" width="24" height="90" rx="4" fill="#f2b218"/>
+  <rect x="550" y="390" width="24" height="60" rx="4" fill="url(#accent1)"/>
+  
+  <!-- Chart baseline -->
+  <line x1="260" y1="450" x2="580" y2="450" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  
+  <!-- Task cards -->
+  <rect x="490" y="180" width="160" height="76" rx="12" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <rect x="505" y="195" width="50" height="8" rx="4" fill="rgba(255,255,255,0.2)"/>
+  <rect x="505" y="215" width="130" height="8" rx="4" fill="rgba(255,255,255,0.1)"/>
+  <rect x="505" y="235" width="100" height="8" rx="4" fill="rgba(255,255,255,0.08)"/>
+  <circle cx="630" cy="220" r="12" fill="none" stroke="#f2b218" stroke-width="2"/>
+  <path d="M626 220L629 223L635 217" stroke="#f2b218" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <rect x="490" y="265" width="160" height="76" rx="12" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <rect x="505" y="280" width="80" height="8" rx="4" fill="rgba(255,255,255,0.15)"/>
+  <rect x="505" y="300" width="120" height="8" rx="4" fill="rgba(255,255,255,0.08)"/>
+  <rect x="505" y="320" width="90" height="8" rx="4" fill="rgba(255,255,255,0.06)"/>
+  <circle cx="630" cy="305" r="12" fill="none" stroke="#ff7a12" stroke-width="2"/>
+  <path d="M626 305L629 308L635 302" stroke="#ff7a12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- AI badge floating -->
+  <rect x="580" y="60" width="120" height="36" rx="18" fill="url(#accent1)"/>
+  <text x="640" y="83" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#061d5c" text-anchor="middle">AI POWERED</text>
+  <rect x="575" y="65" width="8" height="26" rx="4" fill="#ff7a12" opacity="0.3"/>
+  
+  <!-- Small decorative elements -->
+  <circle cx="80" cy="500" r="4" fill="#f2b218" opacity="0.4"/>
+  <circle cx="720" cy="520" r="3" fill="#ff7a12" opacity="0.4"/>
+  <circle cx="60" cy="300" r="2" fill="#ffffff" opacity="0.2"/>
+</svg>

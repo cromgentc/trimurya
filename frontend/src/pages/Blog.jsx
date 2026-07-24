@@ -20,93 +20,10 @@ import {
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SearchBar from '../components/SearchBar.jsx';
+import api from '../services/api.js';
 import 'swiper/css/navigation';
 
 const categories = ['All', 'AI', 'Technology', 'Recruitment', 'Marketing', 'Video'];
-
-const stories = [
-  {
-    title: 'How AI Automation Is Redefining Enterprise Operations',
-    category: 'AI',
-    summary: 'Enterprises are moving beyond pilots and using AI to improve support, reporting, operations, and decision speed.',
-    time: '09:30 AM',
-    readTime: '5 min read',
-    tags: ['Automation', 'LLM', 'Strategy'],
-    visualClass: 'bg-gradient-to-br from-primary via-secondary to-accent'
-  },
-  {
-    title: 'Building Scalable Hiring Pipelines for High-Growth Teams',
-    category: 'Recruitment',
-    summary: 'Structured screening, RPO support, and talent dashboards are becoming essential for fast-growing teams.',
-    time: '10:45 AM',
-    readTime: '4 min read',
-    tags: ['RPO', 'Hiring', 'HR'],
-    visualClass: 'bg-gradient-to-br from-primary via-secondary to-accent'
-  },
-  {
-    title: 'Modern Cybersecurity Priorities for Distributed Businesses',
-    category: 'Technology',
-    summary: 'Cloud security, identity access, backup readiness, and staff awareness remain the strongest first layer.',
-    time: '12:10 PM',
-    readTime: '7 min read',
-    tags: ['Cloud', 'Security', 'IT'],
-    visualClass: 'bg-gradient-to-br from-primary via-secondary to-accent'
-  },
-  {
-    title: 'The New Performance Marketing Stack for Enterprise Brands',
-    category: 'Marketing',
-    summary: 'Search, paid media, content, analytics, and conversion systems now need one operating rhythm.',
-    time: '02:20 PM',
-    readTime: '5 min read',
-    tags: ['SEO', 'Ads', 'Analytics'],
-    visualClass: 'bg-gradient-to-br from-secondary via-accent to-primary'
-  },
-  {
-    title: 'Call Center Quality Metrics Leaders Should Review Weekly',
-    category: 'Technology',
-    summary: 'Resolution quality, response time, escalation reasons, and sentiment can reveal service risks early.',
-    time: '04:00 PM',
-    readTime: '3 min read',
-    tags: ['BPO', 'CX', 'Reporting'],
-    visualClass: 'bg-gradient-to-br from-primary via-secondary to-accent'
-  },
-  {
-    title: 'Why Telecom Field Teams Need Real-Time Operational Visibility',
-    category: 'Technology',
-    summary: 'Better field tracking improves delivery planning, issue handling, and network rollout accountability.',
-    time: '05:15 PM',
-    readTime: '4 min read',
-    tags: ['Telecom', 'Field Ops', 'Network'],
-    visualClass: 'bg-gradient-to-br from-primary via-secondary to-accent'
-  }
-];
-
-const videos = [
-  {
-    title: 'AI Automation Briefing: From Manual Work to Smart Operations',
-    speaker: 'Trimurya Strategy Desk',
-    duration: '08:42',
-    views: '12.4K',
-    youtubeId: 'dQw4w9WgXcQ',
-    visualClass: 'bg-gradient-to-br from-primary via-secondary to-accent'
-  },
-  {
-    title: 'Hiring Playbook: Building a Reliable Recruitment Engine',
-    speaker: 'HR Advisory Team',
-    duration: '06:18',
-    views: '8.7K',
-    youtubeId: 'ysz5S6PUM-U',
-    visualClass: 'bg-gradient-to-br from-primary via-secondary to-accent'
-  },
-  {
-    title: 'Digital Growth Report: Metrics Enterprise Brands Should Watch',
-    speaker: 'Marketing Command Center',
-    duration: '09:05',
-    views: '15.1K',
-    youtubeId: 'ScMzIvxBSi4',
-    visualClass: 'bg-gradient-to-br from-secondary via-accent to-primary'
-  }
-];
 
 const updates = [
   'AI adoption is moving from isolated pilots to department-wide operating systems.',
@@ -121,6 +38,12 @@ const marketWatch = [
   { label: 'Talent outsourcing', value: '+3.7%' },
   { label: 'Performance media', value: '+5.1%' }
 ];
+
+function normalizeTags(tags) {
+  if (!tags) return [];
+  if (Array.isArray(tags)) return tags.map((t) => String(t).trim()).filter(Boolean);
+  return String(tags).split(',').map((t) => t.trim()).filter(Boolean);
+}
 
 function NewsArt({ visualClass, icon: Icon = FiTrendingUp, large = false }) {
   return (
@@ -140,6 +63,18 @@ function NewsArt({ visualClass, icon: Icon = FiTrendingUp, large = false }) {
       </div>
     </div>
   );
+}
+
+function PostVisual({ image, visualClass, icon: Icon = FiTrendingUp, large = false }) {
+  if (image) {
+    return (
+      <div className={`relative overflow-hidden ${large ? 'min-h-[360px]' : 'h-52'}`}>
+        <img src={image} alt="" className="h-full w-full object-cover" loading="lazy" />
+        <span className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+      </div>
+    );
+  }
+  return <NewsArt visualClass={visualClass} icon={Icon} large={large} />;
 }
 
 function VideoCard({ video, onPlay }) {
@@ -263,6 +198,10 @@ export default function Blog() {
   const [query, setQuery] = useState(() => searchParams.get('q') || '');
   const [activeCategory, setActiveCategory] = useState('All');
   const [activeVideo, setActiveVideo] = useState(null);
+  const [stories, setStories] = useState([]);
+  const [storiesLoading, setStoriesLoading] = useState(true);
+  const [videos, setVideos] = useState([]);
+  const [videosLoading, setVideosLoading] = useState(true);
 
   useEffect(() => {
     if (query) {
@@ -272,12 +211,67 @@ export default function Blog() {
     }
   }, [query, setSearchParams]);
 
+  useEffect(() => {
+    let cancelled = false;
+    setStoriesLoading(true);
+    api.get('/blogs/public')
+      .then(({ data }) => {
+        if (cancelled) return;
+        const items = (data?.data || []).map((item) => ({
+          title: item.title,
+          category: item.category || 'General',
+          summary: item.summary || item.content || '',
+          time: item.time || '',
+          readTime: item.readTime || '',
+          tags: normalizeTags(item.tags),
+          visualClass: item.visualClass || 'bg-gradient-to-br from-primary via-secondary to-accent'
+        }));
+        setStories(items);
+      })
+      .catch(() => {
+        if (!cancelled) setStories([]);
+      })
+      .finally(() => {
+        if (!cancelled) setStoriesLoading(false);
+      });
+
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    setVideosLoading(true);
+    api.get('/videos/public')
+      .then(({ data }) => {
+        if (cancelled) return;
+        const items = (data?.data || []).map((item) => ({
+          title: item.title,
+          speaker: item.speaker || 'Trimurya',
+          duration: item.duration || '',
+          views: item.views || '',
+          youtubeId: item.youtubeId,
+          visualClass: item.visualClass || 'bg-gradient-to-br from-primary via-secondary to-accent'
+        }));
+        setVideos(items);
+      })
+      .catch(() => {
+        if (!cancelled) setVideos([]);
+      })
+      .finally(() => {
+        if (!cancelled) setVideosLoading(false);
+      });
+
+    return () => { cancelled = true; };
+  }, []);
+
+  const displayStories = stories;
+
   const searchableItems = useMemo(
     () => [
-      ...stories,
+      ...displayStories,
       ...videos.map((video) => ({ ...video, category: 'Video', summary: video.speaker, tags: ['Video', 'Briefing'] }))
     ],
-    []
+    [displayStories, videos]
   );
 
   const filtered = searchableItems.filter((item) => {
@@ -289,7 +283,7 @@ export default function Blog() {
 
   const filteredStories = filtered.filter((item) => item.category !== 'Video');
   const filteredVideos = activeCategory === 'All' || activeCategory === 'Video' ? videos.filter((video) => `${video.title} ${video.speaker}`.toLowerCase().includes(query.toLowerCase())) : videos;
-  const leadStory = stories[0];
+  const leadStory = displayStories[0];
 
   return (
     <main className="bg-slate-50 text-slate-950 dark:bg-slate-950 dark:text-white">
@@ -320,23 +314,29 @@ export default function Blog() {
 
       <section className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[1.45fr_0.75fr]">
-          <article className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <NewsArt visualClass={leadStory.visualClass} icon={FiZap} large />
-            <div className="p-6 lg:p-8">
-              <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[0.16em] text-secondary">
-                <span>{leadStory.category}</span>
-                <span className="text-slate-300">/</span>
-                <span>{leadStory.time}</span>
-                <span className="text-slate-300">/</span>
-                <span>{leadStory.readTime}</span>
+          {leadStory ? (
+            <article className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <PostVisual image={leadStory.image} visualClass={leadStory.visualClass} icon={FiZap} large />
+              <div className="p-6 lg:p-8">
+                <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[0.16em] text-secondary">
+                  <span>{leadStory.category}</span>
+                  <span className="text-slate-300">/</span>
+                  <span>{leadStory.time}</span>
+                  <span className="text-slate-300">/</span>
+                  <span>{leadStory.readTime}</span>
+                </div>
+                <h2 className="mt-4 max-w-4xl text-3xl font-black leading-tight md:text-5xl">{leadStory.title}</h2>
+                <p className="mt-4 max-w-3xl text-base font-semibold leading-8 text-slate-600 dark:text-slate-300">{leadStory.summary}</p>
+                <button className="focus-ring mt-6 inline-flex items-center gap-2 rounded bg-secondary px-5 py-3 text-sm font-black text-white shadow-lg shadow-secondary/30">
+                  Read Full Story <FiArrowRight />
+                </button>
               </div>
-              <h2 className="mt-4 max-w-4xl text-3xl font-black leading-tight md:text-5xl">{leadStory.title}</h2>
-              <p className="mt-4 max-w-3xl text-base font-semibold leading-8 text-slate-600 dark:text-slate-300">{leadStory.summary}</p>
-              <button className="focus-ring mt-6 inline-flex items-center gap-2 rounded bg-secondary px-5 py-3 text-sm font-black text-white shadow-lg shadow-secondary/30">
-                Read Full Story <FiArrowRight />
-              </button>
+            </article>
+          ) : (
+            <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center dark:border-slate-700 dark:bg-slate-800">
+              <p className="text-sm font-semibold text-slate-500 dark:text-slate-300">No stories available right now. Please check back later.</p>
             </div>
-          </article>
+          )}
 
           <aside className="grid gap-6">
             <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -398,7 +398,7 @@ export default function Blog() {
           <div className="grid gap-5 md:grid-cols-2">
             {filteredStories.map((story) => (
               <article key={story.title} className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-premium dark:border-slate-800 dark:bg-slate-900">
-                <NewsArt visualClass={story.visualClass} icon={story.category === 'Recruitment' ? FiBriefcase : FiTrendingUp} />
+                <PostVisual visualClass={story.visualClass} icon={story.category === 'Recruitment' ? FiBriefcase : FiTrendingUp} image={story.image} />
                 <div className="p-5">
                   <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[0.15em] text-slate-500">
                     <span className="text-secondary">{story.category}</span>
@@ -480,11 +480,17 @@ export default function Blog() {
               1180: { slidesPerView: 3, spaceBetween: 16 }
             }}
           >
-            {filteredVideos.map((video) => (
-              <SwiperSlide key={video.title} className="h-auto">
+            {filteredVideos.length > 0 ? filteredVideos.map((video) => (
+              <SwiperSlide key={video.youtubeId || video.title} className="h-auto">
                 <VideoCard video={video} onPlay={setActiveVideo} />
               </SwiperSlide>
-            ))}
+            )) : (
+              <SwiperSlide className="h-auto">
+                <div className="flex h-32 items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 text-sm font-semibold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                  No videos available
+                </div>
+              </SwiperSlide>
+            )}
           </Swiper>
         </div>
       </section>

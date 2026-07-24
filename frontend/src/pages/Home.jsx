@@ -1,38 +1,62 @@
-import { FiCheckCircle, FiClipboard, FiLayers } from 'react-icons/fi';
-import { FiCpu, FiGlobe } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
 import CounterCard from '../components/CounterCard.jsx';
 import HeroSlider from '../components/HeroSlider.jsx';
 import SectionHeader from '../components/SectionHeader.jsx';
 import ServiceCard from '../components/ServiceCard.jsx';
 import Button from '../components/Button.jsx';
 import heroIllustration from '../assets/ai-hero.png';
-import { projects, services, stats, values } from '../data/siteData.js';
+import { fetchPublished } from '../services/contentApi.js';
+import { resolveIcon } from '../utils/iconResolver.js';
 
 const processSteps = [
   {
     title: 'Discover',
     copy: 'We define the opportunity, success metrics, and operating model before any work begins.',
-    icon: FiClipboard
+    icon: 'FiClipboard'
   },
   {
     title: 'Architect',
     copy: 'We design the right solution, team structure, timeline, and technology stack for your business.',
-    icon: FiLayers
+    icon: 'FiLayers'
   },
   {
     title: 'Deliver',
     copy: 'We launch fast, maintain quality, and make sure every deliverable is usable from day one.',
-    icon: FiCheckCircle
+    icon: 'FiCheckCircle'
   }
 ];
 
 export default function Home() {
+  const [stats, setStats] = useState([]);
+  const [values, setValues] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      fetchPublished('stats'),
+      fetchPublished('values'),
+      fetchPublished('projects')
+    ]).then(([statsData, valuesData, projectsData]) => {
+      setStats(statsData);
+      setValues(valuesData);
+      setProjects(projectsData);
+      setLoading(false);
+    }).catch(() => setLoading(false));
+  }, []);
+
   return (
     <>
       <HeroSlider />
 
       <section className="relative z-20 -mt-7 px-4 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-4">{stats.map((stat) => <CounterCard key={stat.label} {...stat} />)}</div>
+        {loading ? (
+          <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-4">
+            {[1,2,3,4].map((n) => <div key={n} className="h-24 rounded-2xl bg-slate-100 dark:bg-slate-800 animate-pulse" />)}
+          </div>
+        ) : (
+          <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-4">{stats.map((stat) => <CounterCard key={stat.slug || stat._id} value={stat.value} suffix="" label={stat.label} />)}</div>
+        )}
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
@@ -70,8 +94,8 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader eyebrow="Delivery Framework" title="A trusted process for complex projects" copy="We combine enterprise-grade planning with lean execution so your project stays on schedule and on budget." />
           <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {processSteps.map((step, index) => {
-              const Icon = step.icon;
+            {processSteps.map((step) => {
+              const Icon = resolveIcon(step.icon);
               return (
                 <div key={step.title} className="rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
                   <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-secondary/10 text-secondary dark:bg-secondary/20">
@@ -90,13 +114,16 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <SectionHeader eyebrow="Why Clients Choose Us" title="Built to support enterprise expectations" />
           <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {values.map((value) => { const Icon = value.icon; return (
-              <div key={value.title} className="rounded-3xl bg-white p-7 shadow-sm dark:bg-slate-950">
-                <Icon className="text-secondary" size={26} />
-                <h3 className="mt-5 font-black text-lg text-primary dark:text-white">{value.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{value.copy}</p>
-              </div>
-            ); })}
+            {values.map((value) => {
+              const Icon = resolveIcon(value.icon);
+              return (
+                <div key={value.slug || value._id} className="rounded-3xl bg-white p-7 shadow-sm dark:bg-slate-950">
+                  {Icon && <Icon className="text-secondary" size={26} />}
+                  <h3 className="mt-5 font-black text-lg text-primary dark:text-white">{value.title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{value.copy}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -105,13 +132,13 @@ export default function Home() {
         <SectionHeader eyebrow="Case Studies" title="Outcomes for modern teams" copy="Selected examples where better delivery and digital design made a difference." />
         <div className="grid gap-6 md:grid-cols-2">
           {projects.map((project) => (
-            <article key={project.title} className="group overflow-hidden rounded-[28px] border border-slate-200 bg-white p-8 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl dark:border-slate-800 dark:bg-slate-950">
+            <article key={project.slug || project._id} className="group overflow-hidden rounded-[28px] border border-slate-200 bg-white p-8 shadow-xl transition hover:-translate-y-1 hover:shadow-2xl dark:border-slate-800 dark:bg-slate-950">
               <p className="text-xs font-bold uppercase tracking-[0.24em] text-secondary">{project.type}</p>
               <h3 className="mt-4 text-2xl font-black leading-tight text-primary dark:text-white">{project.title}</h3>
               <p className="mt-3 text-sm font-semibold text-slate-500 dark:text-slate-300">{project.client}</p>
-              <div className="mt-6 rounded-3xl bg-secondary/10 px-4 py-4 text-sm font-black text-secondary dark:bg-secondary/20 dark:text-secondary">{project.impact}</div>
+              <div className="mt-6 rounded-3xl bg-secondary/10 px-4 py-4 text-sm font-black text-secondary dark:bg-secondary/20 dark:text-secondary">{project.summary}</div>
               <p className="mt-5 text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Technology</p>
-              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{project.tech}</p>
+              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{Array.isArray(project.tech) ? project.tech.join(', ') : project.tech}</p>
             </article>
           ))}
         </div>
@@ -119,13 +146,11 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-4 pb-20 lg:px-8">
         <div className="relative rounded-[32px] overflow-hidden shadow-[0_30px_100px_rgba(6,29,92,0.35)] sm:px-12 lg:px-16">
-          {/* Background image */}
           <div
             className="absolute inset-0 bg-center bg-cover"
             style={{ backgroundImage: `url(${heroIllustration})` }}
             aria-hidden="true"
           />
-          {/* Gradient overlay for readability */}
           <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/30" />
 
           <div className="relative px-8 py-12 text-white sm:px-12 lg:px-16">

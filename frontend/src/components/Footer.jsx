@@ -2,65 +2,87 @@
 import { motion } from 'framer-motion';
 import {
   FiArrowUp,
-  FiGithub,
-  FiInstagram,
-  FiLinkedin,
+  FiArrowRight,
   FiMail,
   FiPhone,
-  FiTwitter,
-  FiYoutube
+  FiMapPin,
+  FiShield,
+  FiUsers,
+  FiGlobe,
+  FiAward
 } from 'react-icons/fi';
-import { FaFacebookF, FaWhatsapp } from 'react-icons/fa';
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaXTwitter, FaYoutube, FaWhatsapp, FaGithub } from 'react-icons/fa6';
 import TextLogo from './TextLogo.jsx';
+import Button from './Button.jsx';
 
 const footerColumns = [
   {
-    title: 'AI & Technology',
-    links: ['Artificial Intelligence', 'Software Development', 'Web Development', 'Mobile Apps', 'Cloud Solutions']
+    title: 'Services',
+    links: [
+      { label: 'AI Project Management', href: '/services/ai-project-management' },
+      { label: 'Website Development', href: '/services/website-development' },
+      { label: 'Digital Marketing', href: '/services/digital-marketing' },
+      { label: 'Business Consultancy', href: '/services/business-consultancy' },
+      { label: 'HR & Recruitment', href: '/services/hr-consultancy' },
+      { label: 'Cloud Solutions', href: '/services/cloud-solutions' },
+      { label: 'Cybersecurity', href: '/services/cybersecurity' }
+    ]
   },
   {
-    title: 'Business Services',
-    links: ['Business Consultancy', 'Digital Marketing', 'HR Consultancy', 'Recruitment', 'Call Center']
-  },
-  {
-    title: 'Industries',
-    links: ['Healthcare', 'Education', 'Telecommunications', 'E-Commerce', 'Film & Media']
+    title: 'Quick Links',
+    links: [
+      { label: 'About Us', href: '/about' },
+      { label: 'Careers', href: '/careers' },
+      { label: 'Case Studies', href: '/projects' },
+      { label: 'Blog & Insights', href: '/blog' },
+      { label: 'Industries', href: '/industries' },
+      { label: 'Marketplace', href: '/marketplace' }
+    ]
   },
   {
     title: 'Company',
-    links: ['About', 'Services', 'Projects', 'Careers', 'Blog', 'Contact']
+    links: [
+      { label: 'Partner With Us', href: '/contact' },
+      { label: 'Request a Quote', href: '/contact' },
+      { label: 'Schedule a Call', href: '/contact' },
+      { label: 'Client Support', href: '/contact' },
+      { label: 'Press & Media', href: '#' }
+    ]
   }
 ];
 
 const socialLinks = [
-  { label: 'LinkedIn', icon: FiLinkedin, href: '#' },
-  { label: 'Twitter X', icon: FiTwitter, href: '#' },
+  { label: 'LinkedIn', icon: FaLinkedinIn, href: '#' },
+  { label: 'Twitter', icon: FaXTwitter, href: '#' },
   { label: 'Facebook', icon: FaFacebookF, href: '#' },
-  { label: 'YouTube', icon: FiYoutube, href: '#' },
-  { label: 'Instagram', icon: FiInstagram, href: '#' },
+  { label: 'YouTube', icon: FaYoutube, href: '#' },
+  { label: 'Instagram', icon: FaInstagram, href: '#' },
   { label: 'WhatsApp', icon: FaWhatsapp, href: 'https://wa.me/910000000000' },
-  { label: 'GitHub', icon: FiGithub, href: '#' }
+  { label: 'GitHub', icon: FaGithub, href: '#' }
 ];
 
-function slug(label) {
-  const map = {
-    About: '/about',
-    Services: '/services',
-    Projects: '/projects',
-    Careers: '/careers',
-    Blog: '/blog',
-    Contact: '/contact'
-  };
-  return map[label] || '/services';
-}
+const trustBadges = [
+  { label: 'ISO 27001', icon: FiShield },
+  { label: 'SOC 2', icon: FiAward },
+  { label: 'AWS Partner', icon: FiGlobe },
+  { label: 'GDPR Ready', icon: FiUsers }
+];
+
+const footerStats = [
+  { value: '7+', label: 'Years of Excellence' },
+  { value: '200+', label: 'Projects Delivered' },
+  { value: '60+', label: 'Enterprise Clients' },
+  { value: '99%', label: 'Client Satisfaction' }
+];
 
 function FooterLink({ children, to }) {
   return (
     <Link
-      to={to || slug(children)}
-      className="w-fit text-[15px] font-semibold leading-7 text-slate-200 transition hover:text-accent"
+      to={to}
+      className="group inline-flex items-center gap-1.5 text-[13px] font-semibold leading-6 text-slate-400 transition-colors duration-300 hover:text-secondary"
     >
       {children}
+      <FiArrowRight size={10} className="opacity-0 -translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
     </Link>
   );
 }
@@ -69,100 +91,217 @@ export default function Footer() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <footer className="relative overflow-hidden bg-slate-900 text-slate-100">
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-        <div className="grid gap-12 md:grid-cols-12 md:gap-8">
-          <div className="md:col-span-4">
-            <TextLogo />
-            <p className="mt-4 max-w-md text-sm text-slate-300">
-              Trimurya builds enterprise-grade data and AI products that power
-              reliable, compliant, and scalable AI systems. Partner with us to
-              accelerate your AI roadmap and access production-ready datasets.
-            </p>
+    <footer className="relative overflow-hidden">
+      {/* Top gradient fade from page */}
+      <div className="absolute inset-x-0 -top-24 h-24 bg-gradient-to-t from-slate-900 to-transparent" />
 
-            <div className="mt-6 flex items-center gap-3">
-              <a href="mailto:help@trimuryacorporation.in" className="inline-flex items-center gap-2 rounded-full bg-slate-800/40 px-3 py-2 text-sm font-semibold hover:bg-slate-800">
-                <FiMail />
-                help@trimuryacorporation.in
-              </a>
+      {/* Main Footer */}
+      <div className="relative bg-slate-900">
+        {/* Subtle grid background pattern */}
+        <div className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `linear-gradient(rgba(242,178,24,1) 1px, transparent 1px), linear-gradient(90deg, rgba(242,178,24,1) 1px, transparent 1px)`,
+            backgroundSize: '48px 48px'
+          }}
+        />
+
+        {/* Top accent line */}
+        <div className="h-1 w-full bg-gradient-to-r from-transparent via-accent to-transparent" />
+
+        <div className="relative mx-auto max-w-7xl px-5 pt-16 pb-10 lg:px-8">
+          {/* Main Grid */}
+          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12 lg:gap-10">
+            {/* Brand Column */}
+            <div className="lg:col-span-4">
+              <Link to="/" className="inline-flex shrink-0 items-center w-[180px] sm:w-[220px]">
+                <img
+                  src="/assets/trimurya-logo-vector.svg"
+                  alt="Trimurya Corporation"
+                  className="block h-auto w-full object-contain brightness-0 invert"
+                  decoding="async"
+                />
+              </Link>
+
+              <p className="mt-6 text-[13px] leading-7 text-slate-400">
+                A multi-service enterprise partner unifying <span className="text-slate-300">AI</span>, <span className="text-slate-300">web</span>, <span className="text-slate-300">cloud</span>, <span className="text-slate-300">talent</span>, and <span className="text-slate-300">strategy</span> under one platform. We help businesses move faster, scale smarter, and compete with confidence.
+              </p>
+
+              {/* CTA Button */}
+              <div className="mt-6">
+                <Button to="/contact" className="bg-secondary text-white shadow-lg shadow-accent/20 hover:bg-accent/90 transition-all duration-300 text-xs font-bold px-6 py-3 rounded-xl">
+                  Start Your Project <FiArrowRight size={14} />
+                </Button>
+              </div>
+
+              {/* Trust Badges */}
+              <div className="mt-8 flex flex-wrap gap-2.5">
+                {trustBadges.map((badge) => {
+                  const Icon = badge.icon;
+                  return (
+                    <span key={badge.label} className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-semibold text-slate-400 transition-colors hover:border-secondary/30 hover:text-secondary">
+                      <Icon size={11} />
+                      {badge.label}
+                    </span>
+                  );
+                })}
+              </div>
+
+              {/* Social Links */}
+              <div className="mt-8">
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Follow Us</p>
+                <div className="flex flex-wrap gap-2">
+                  {socialLinks.map((social) => {
+                    const Icon = social.icon;
+                    return (
+                      <motion.a
+                        key={social.label}
+                        href={social.href}
+                        aria-label={social.label}
+                        whileHover={{ y: -2, scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/8 bg-white/5 text-slate-400 transition-all duration-300 hover:border-secondary/40 hover:bg-secondary hover:text-white"
+                      >
+                        <Icon size={14} />
+                      </motion.a>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
 
-            <div className="mt-6 flex gap-3">
-              {socialLinks.map((social) => {
-                const Icon = social.icon;
-                return (
-                  <motion.a
-                    key={social.label}
-                    href={social.href}
-                    aria-label={social.label}
-                    whileHover={{ y: -3, scale: 1.06 }}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800/40 text-slate-100 hover:bg-accent"
-                  >
-                    <Icon />
-                  </motion.a>
-                );
-              })}
+            {/* Links Columns */}
+            <div className="lg:col-span-2">
+              <h4 className="text-[11px] font-bold uppercase tracking-[0.22em] text-secondary mb-5">Navigation</h4>
+              <div className="grid gap-3">
+                {footerColumns[0].links.map((link) => (
+                  <FooterLink key={link.label} to={link.href}>{link.label}</FooterLink>
+                ))}
+              </div>
+            </div>
+
+            <div className="lg:col-span-2">
+              <h4 className="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">Quick Links</h4>
+              <div className="grid gap-3">
+                {footerColumns[1].links.map((link) => (
+                  <FooterLink key={link.label} to={link.href}>{link.label}</FooterLink>
+                ))}
+              </div>
+            </div>
+
+            <div className="lg:col-span-2">
+              <h4 className="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">Company</h4>
+              <div className="grid gap-3">
+                {footerColumns[2].links.map((link) => (
+                  <FooterLink key={link.label} to={link.href}>{link.label}</FooterLink>
+                ))}
+              </div>
+            </div>
+
+            {/* Contact + Newsletter Column */}
+            <div className="lg:col-span-2">
+              <h4 className="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">Contact</h4>
+              <div className="grid gap-4">
+                <a href="mailto:info@trimuryacorporation.in" className="group flex items-start gap-3 text-[13px] text-slate-400 transition-colors hover:text-secondary">
+                  <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-secondary/10 text-secondary">
+                    <FiMail size={13} />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-slate-300 transition-colors group-hover:text-secondary">info@trimuryacorporation.in</p>
+                    <p className="text-[11px] text-slate-500">Email us anytime</p>
+                  </div>
+                </a>
+                <a href="tel:+910000000000" className="group flex items-start gap-3 text-[13px] text-slate-400 transition-colors hover:text-secondary">
+                  <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-secondary/10 text-secondary">
+                    <FiPhone size={13} />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-slate-300 transition-colors group-hover:text-secondary">+91 00000 00000</p>
+                    <p className="text-[11px] text-slate-500">Mon-Fri, 9am-6pm IST</p>
+                  </div>
+                </a>
+                <div className="flex items-start gap-3 text-[13px] text-slate-400">
+                  <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-secondary/10 text-secondary">
+                    <FiMapPin size={13} />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-slate-300">India</p>
+                    <p className="text-[11px] text-slate-500">Serving clients globally</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="md:col-span-2">
-            <h4 className="mb-4 text-sm font-bold uppercase text-slate-300">Products</h4>
-            <div className="grid gap-2">
-              {['Data Marketplace', 'Annotation Tool', 'Transcription', 'RLHF Tool'].map((t) => (
-                <FooterLink key={t}>{t}</FooterLink>
+          {/* Divider */}
+          <div className="my-10 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+          {/* Stats Bar */}
+          <div className="grid grid-cols-2 gap-5 rounded-2xl border border-white/8 bg-white/[0.03] p-6 backdrop-blur-sm md:grid-cols-4 lg:gap-8 lg:p-8">
+            {footerStats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="text-center"
+              >
+                <p className="text-2xl font-black text-secondary md:text-3xl">{stat.value}</p>
+                <p className="mt-1 text-[11px] font-medium uppercase tracking-[0.15em] text-slate-500">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Divider */}
+          <div className="my-10 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+          {/* Bottom Bar */}
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+            <div className="flex flex-col items-center gap-2 md:items-start">
+              <p className="text-[12px] text-slate-500">
+                © 2026 <span className="font-semibold text-slate-300">Trimurya Corporation</span>. All rights reserved.
+              </p>
+              <p className="text-[11px] text-slate-600">
+                Create. Preserve. Transform.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-5">
+              {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((link) => (
+                <Link
+                  key={link}
+                  to="#"
+                  className="text-[12px] text-slate-500 transition-colors hover:text-secondary"
+                >
+                  {link}
+                </Link>
               ))}
             </div>
           </div>
 
-          <div className="md:col-span-2">
-            <h4 className="mb-4 text-sm font-bold uppercase text-slate-300">Solutions</h4>
-            <div className="grid gap-2">
-              {['Conversational AI', 'Computer Vision', 'Healthcare', 'Auto & ADAS'].map((t) => (
-                <FooterLink key={t}>{t}</FooterLink>
-              ))}
-            </div>
-          </div>
-
-          <div className="md:col-span-4">
-            <h4 className="mb-4 text-sm font-bold uppercase text-slate-300">Newsletter</h4>
-            <p className="text-sm text-slate-300">Get product updates, dataset launches, and enterprise AI insights.</p>
-            <form className="mt-4 flex max-w-md gap-2">
-              <input
-                type="email"
-                placeholder="Your business email"
-                className="flex-1 rounded-md border border-slate-700 bg-slate-900/30 px-4 py-2 text-sm text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-accent"
-              />
-              <button className="rounded-md bg-accent px-4 py-2 text-sm font-bold text-slate-900">Subscribe</button>
-            </form>
-
-            <div className="mt-6 flex items-center gap-4 text-sm text-slate-400">
-              <FiPhone />
-              <span>+91 00000 00000</span>
-            </div>
+          {/* Enterprise tagline */}
+          <div className="mt-8 flex items-center justify-center gap-3 text-[11px] text-slate-600">
+            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-green-500/80" />
+            All systems operational
+            <span className="text-slate-700"> · </span>
+            Enterprise-grade delivery since 2018
+            <span className="text-slate-700"> · </span>
+            Trusted by 200+ organizations
           </div>
         </div>
-
-        <div className="mt-12 border-t border-slate-800 pt-6 text-sm text-slate-400">
-          <div className="flex flex-col items-start justify-between gap-4 md:flex-row">
-            <p>© 2026 Trimurya Corporation. All rights reserved.</p>
-            <div className="flex flex-wrap items-center gap-4">
-              <FooterLink to="/privacy-policy">Privacy Policy</FooterLink>
-              <FooterLink to="/terms-of-service">Terms</FooterLink>
-              <FooterLink to="/cookie-policy">Cookie Policy</FooterLink>
-            </div>
-          </div>
-        </div>
-
       </div>
 
-      <button
+      {/* Back to top button */}
+      <motion.button
         type="button"
         onClick={scrollToTop}
-        className="focus-ring fixed bottom-8 right-6 inline-flex items-center justify-center rounded-full bg-accent p-3 text-slate-900 shadow-lg hover:translate-y-[-2px]"
+        whileHover={{ y: -2, scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="focus-ring fixed bottom-8 right-8 z-50 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary text-white shadow-2xl shadow-accent/30 transition-all duration-300 hover:bg-accent hover:shadow-accent/50"
         aria-label="Back to top"
       >
-        <FiArrowUp size={20} />
-      </button>
+        <FiArrowUp size={18} />
+      </motion.button>
     </footer>
   );
 }
